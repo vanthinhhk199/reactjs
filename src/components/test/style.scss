@@ -1,0 +1,49 @@
+.login-page{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .login-form-container{
+        width: 520px;
+        padding: 48px;
+        box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.2);
+        background: #fff;
+    }
+
+    .form-lable{
+        width: 100%;
+        display: block;
+    }
+
+    .form-control{
+        height: 25px;
+        display: block;
+        width: 494px;
+        padding: 6px 12px;
+        border-radius: 7px; 
+        border: 1px solid #ccc;
+    }
+
+    .form-control:focus {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        outline: none;
+      }
+
+    .mb-2{
+        margin-bottom: 16px;
+        
+    }
+
+    .submit-btn{
+        height: 40px;
+        width: 120px;
+        cursor: pointer;
+    }
+
+    .error-feedback{
+        color: red;
+        margin-top: 8px;
+    }
+}
