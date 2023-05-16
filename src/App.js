@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Header from './components/Header/index';
 import NotFound from './components/NotFound/index';
 import ProductFeature from './components/Product/index';
+import ListPage from './components/Product/pages/ListPage';
 
 
 function App() {
@@ -11,9 +12,8 @@ function App() {
     <BrowserRouter>
       <Header/>
       <Switch>
-        <Route exact path="/" component="" />
+        <Route exact path="/" component={ListPage} />
         <Route path="/products" component={ProductFeature} />
-
         <Route component={NotFound}/>
       </Switch>
     </BrowserRouter>

@@ -27,8 +27,11 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: "row nowrap",
     justifyContent: "center",
 
-    marginTop: "20px",
+    margin: "25px 0px",
     paddingBottom: "10px",
+  },
+  framedescrip: {
+    padding: "40px 0",
   },
 }));
 
@@ -116,7 +119,7 @@ function ListPage(props) {
   return (
     <Box>
       <Container>
-        <Grid container spacing={2}>
+        <Grid container className={classes.framedescrip} spacing={2}>
           <Grid item className={classes.left}>
             <Paper elevation={0}>
               <ProductFilters

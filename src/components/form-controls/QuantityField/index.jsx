@@ -1,10 +1,16 @@
-import { Box, FormHelperText, IconButton, makeStyles, Typography } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { AddCircleOutline, RemoveCircleOutline } from '@material-ui/icons';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Controller } from 'react-hook-form';
+import {
+  Box,
+  FormHelperText,
+  IconButton,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import { AddCircleOutline, RemoveCircleOutline } from "@material-ui/icons";
+import PropTypes from "prop-types";
+import React from "react";
+import { Controller } from "react-hook-form";
 
 QuantityField.propTypes = {
   form: PropTypes.object.isRequired,
@@ -18,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 
   box: {
-    display: 'flex',
-    flexFlow: 'row nowrap',
-    alignItems: 'center',
-    maxWidth: '200px',
+    display: "flex",
+    flexFlow: "row nowrap",
+    alignItems: "center",
+    maxWidth: "200px",
   },
 }));
 
@@ -32,7 +38,13 @@ function QuantityField(props) {
   const hasError = !!errors[name];
 
   return (
-    <FormControl error={hasError} fullWidth margin="normal" variant="outlined" size="small">
+    <FormControl
+      error={hasError}
+      fullWidth
+      margin="normal"
+      variant="outlined"
+      size="small"
+    >
       <Typography>{label}</Typography>
 
       <Controller
@@ -40,7 +52,15 @@ function QuantityField(props) {
         control={form.control}
         render={({ onChange, onBlur, value, name }) => (
           <Box className={classes.box}>
-            <IconButton onClick={() => setValue(name, Number.parseInt(value) ? Number.parseInt(value) - 1 : 1)}>
+            {/*vì giá trị trong input là string nên ta conver dùng parseInt chuyển sang number*/}
+            <IconButton
+              onClick={() =>
+                setValue(
+                  name,
+                  Number.parseInt(value) ? Number.parseInt(value) - 1 : 1
+                )
+              }
+            >
               <RemoveCircleOutline />
             </IconButton>
 
@@ -53,7 +73,14 @@ function QuantityField(props) {
               onBlur={onBlur}
             />
 
-            <IconButton onClick={() => setValue(name, Number.parseInt(value) ? Number.parseInt(value) + 1 : 1)}>
+            <IconButton
+              onClick={() =>
+                setValue(
+                  name,
+                  Number.parseInt(value) ? Number.parseInt(value) + 1 : 1
+                )
+              }
+            >
               <AddCircleOutline />
             </IconButton>
           </Box>
