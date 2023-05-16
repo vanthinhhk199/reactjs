@@ -4,22 +4,21 @@ const productApi = {
   async getAll(params) {
     // Transform _page to _start
     const newParams = { ...params };
-    newParams._start = !params._page || params._page <= 1 ? 0 : (params._page - 1) * (params._limit || 50);
+    newParams._start = !params._page || params._page <= 1 ? 0 : (params._page - 1) * (params._limit || 50);   // Tạo một bản sao của đối tượng params để thay đổi giá trị bên trong mà không ảnh hưởng đến đối tượng gốc
 
-    // Remove un-needed key
-    delete newParams._page;
+    delete newParams._page; // Xóa key không cần thiết
 
     // Fetch product list + count
-    const productList = await axiosClient.get('/products', { params: newParams });
-    const count = await axiosClient.get('/products/count', { params: newParams });
+    const productList = await axiosClient.get('/products', { params: newParams }); // Gửi yêu cầu GET đến '/products' với các tham số mới được xác định
+    const count = await axiosClient.get('/products/count', { params: newParams }); // Gửi yêu cầu GET đến '/products/count' với các tham số mới được xác định
 
-    // Build response and return
+  // Trả về một đối tượng chứa dữ liệu sản phẩm và thông tin phân tran
     return {
-      data: productList,
+      data: productList, // Dữ liệu sản phẩm từ yêu cầu GET '/products'
       pagination: {
-        page: params._page,
-        limit: params._limit,
-        total: count,
+        page: params._page, // Trang hiện tại
+        limit: params._limit, // Số sản phẩm trên mỗi trang
+        total: count, // Tổng số sản phẩm dựa trên yêu cầu GET '/products/count'
       },
     };
   },

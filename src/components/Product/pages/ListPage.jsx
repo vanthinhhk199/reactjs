@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Container, Grid, Box, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,6 +7,10 @@ import ProductSkeletonList from "../components/ProductSkeletonList";
 import ProductList from "./../components/ProductList";
 import { Pagination } from "@material-ui/lab";
 import ProductSort from "../components/ProductSort";
+import ProductFilters from "../components/ProductFilters";
+import FilterViewer from "./../components/FilterViewer";
+import { useHistory, useLocation } from "react-router";
+import queryString from "query-string";
 
 ListPage.propTypes = {};
 
@@ -30,24 +34,33 @@ const useStyles = makeStyles((theme) => ({
 
 function ListPage(props) {
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+  const queryParams = useMemo(() => {
+    const params = queryString.parse(location.search);
+
+    return {
+      ...params,
+      _page: Number.parseInt(params._page) || 1,
+      _limit: Number.parseInt(params._limit) || 9,
+      _sort: params._sort || "salePrice:ASC",
+      isPromotion: params.isPromotion === "true",
+      isFreeShip: params.isFreeShip === "true",
+    };
+  }, [location.search]);
   const [productList, setProductList] = useState([]);
   const [pagination, setPagination] = useState({
-    limit: 9,
+    limit: 12,
     page: 1,
     total: 10,
   });
   const [loading, setloading] = useState(true);
-  const [filters, setFilters] = useState({
-    _page: 1,
-    _limit: 9,
-    _sort: "salePrice:ASC",
-  });
 
   useEffect(() => {
     (async () => {
       //gọi api nên đặt vào try/catch
       try {
-        const { data, pagination } = await productApi.getAll(filters);
+        const { data, pagination } = await productApi.getAll(queryParams);
         setProductList(data);
         setPagination(pagination);
       } catch (error) {
@@ -55,34 +68,71 @@ function ListPage(props) {
       }
       setloading(false);
     })();
-  }, [filters]);
+  }, [queryParams]);
 
   const handlePageChange = (e, page) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
+    const filters = {
+      ...queryParams,
       _page: page,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
   };
 
   const handleSortChange = (newSortValue) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
+    const filters = {
+      ...queryParams,
       _sort: newSortValue,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
   };
+
+  const handleFiltersChange = (newFilters) => {
+    const filters = {
+      ...queryParams,
+      ...newFilters,
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
+  };
+
+  const setNewFilters = (newFilters) => {
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(newFilters),
+    });
+  };
+
   return (
     <Box>
       <Container>
         <Grid container spacing={2}>
           <Grid item className={classes.left}>
-            <Paper elevation={0}>Left column</Paper>
+            <Paper elevation={0}>
+              <ProductFilters
+                filters={queryParams}
+                onChange={handleFiltersChange}
+              />
+            </Paper>
           </Grid>
           <Grid item className={classes.right}>
             <Paper elevation={0}>
               <ProductSort
-                currentSort={filters._sort}
+                currentSort={queryParams._sort}
                 onChange={handleSortChange}
               />
+              <FilterViewer filters={queryParams} onChange={setNewFilters} />
+
               {loading ? (
                 <ProductSkeletonList length={9} />
               ) : (

@@ -1,35 +1,35 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'https://api.ezfrontend.com/',
+  baseURL: 'https://api.ezfrontend.com/',  // Địa chỉ cơ sở cho các yêu cầu API
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json',  // Đặt header Content-Type là JSON
   },
 });
 
 // Interceptors
-// Add a request interceptor
+// Thêm interceptor cho yêu cầu
 axiosClient.interceptors.request.use(
     function (config) {
-      // Do something before request is sent
+    // Thực hiện một số thao tác trước khi gửi yêu cầu
       return config;
     },
     function (error) {
-      // Do something with request error
+    // Xử lý lỗi khi gửi yêu cầu
       return Promise.reject(error);
     }
   );
   
-  // Add a response interceptor
+// Thêm interceptor cho phản hồi
   axiosClient.interceptors.response.use(
     function (response) {
-      // Any status code that lie within the range of 2xx cause this function to trigger
-      // Do something with response data
+    // Hàm này được gọi khi phản hồi có mã trạng thái từ 200 đến 299
+    // Xử lý dữ liệu phản hồi
       return response.data;
     },
     function (error) {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
+    // Hàm này được gọi khi phản hồi có mã trạng thái không nằm trong khoảng từ 200 đến 299
+    // Xử lý lỗi phản hồi
       const { config, status, data } = error.response;
       const URLS = ['/auth/local/register', '/auth/local'];
       if (URLS.includes(config.url) && status === 400) {

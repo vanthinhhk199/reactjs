@@ -11,14 +11,15 @@ Register.propTypes = {
 };
 
 function Register(props) {
-  const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar(); // thông báo success hoặc error
+  const dispatch = useDispatch(); // Sử dụng useDispatch từ react-redux để lấy dispatch function
+  const { enqueueSnackbar } = useSnackbar(); // Sử dụng useSnackbar từ react-toastify để hiển thị thông báo
 
   const handleSubmit = async (values) => {
     try {
       // auto set username = email
       values.username = values.email;
 
+      // Tạo action register và gửi dispatch để gọi API đăng ký
       const action = register(values);
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
