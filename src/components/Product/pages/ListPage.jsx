@@ -45,7 +45,7 @@ function ListPage(props) {
     return {
       ...params,
       _page: Number.parseInt(params._page) || 1,
-      _limit: Number.parseInt(params._limit) || 9,
+      _limit: Number.parseInt(params._limit) || 12,
       _sort: params._sort || "salePrice:ASC",
       isPromotion: params.isPromotion === "true",
       isFreeShip: params.isFreeShip === "true",
