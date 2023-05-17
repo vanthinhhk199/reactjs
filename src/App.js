@@ -5,6 +5,7 @@ import Header from './components/Header/index';
 import NotFound from './components/NotFound/index';
 import ProductFeature from './components/Product/index';
 import ListPage from './components/Product/pages/ListPage';
+import CartFeature from './components/Cart';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={ListPage} />
         <Route path="/products" component={ProductFeature} />
+        <Route path="/cart" component={CartFeature} />
         <Route component={NotFound}/>
       </Switch>
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import { Box, Menu, MenuItem } from "@material-ui/core";
+import { Badge, Box, Menu, MenuItem } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,13 +7,15 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { AccountCircle, Close } from "@material-ui/icons";
+import { AccountCircle, Close, ShoppingCart } from "@material-ui/icons";
 import AppleIcon from "@material-ui/icons/Apple";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "../auth/components/login/index";
 import Register from "../auth/components/register/index";
 import { logout } from "../auth/userSlice";
+import { cartItemsCountSelector } from "./../Cart/selectors";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +50,8 @@ const MODE = {
 export default function Header() {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.current);
+  const cartItemsCount = useSelector(cartItemsCountSelector);
+  const history = useHistory();
   const isLoggedIn = !!loggedInUser.id; // kiểm tra xem có id hay chưa có id là đăng nhập rồi ngược lại
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -70,6 +74,10 @@ export default function Header() {
     setAnchorEl(null);
   };
 
+  const handleCartClick = () => {
+    history.push("/cart");
+  };
+
   const handleLogoutClick = () => {
     const action = logout();
     dispatch(action);
@@ -88,6 +96,16 @@ export default function Header() {
               Login
             </Button>
           )}
+
+          <IconButton
+            aria-label="show 4 new mails"
+            color="inherit"
+            onClick={handleCartClick}
+          >
+            <Badge badgeContent={cartItemsCount} color="secondary">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
 
           {isLoggedIn && (
             <IconButton color="inherit" onClick={handleUserClick}>
